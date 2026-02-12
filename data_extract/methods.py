@@ -1,4 +1,4 @@
-from requests import post
+from requests import post, get
 import json
 import base64
 
@@ -27,4 +27,22 @@ def get_token(client_id,client_secret):
     acess_token = result['access_token']
     
     # Retornando o token de acesso
-    return(acess_token)    
+    return acess_token    
+
+def get_auth_header(token):
+    return {"Authorization" : "Bearer "+token}
+
+def get_artists(music_id,headers):
+    url = f"https://api.spotify.com/v1/tracks/{music_id}"
+    result = get(url=url,headers=headers)
+    print(result.content)
+    
+def get_track(music_id,headers):
+    url = f"https://api.spotify.com/v1/tracks/{music_id}"
+    result = get(url=url,headers=headers)
+    print(result.content)
+    
+def get_track_infos(music_id,headers):
+    url = f"https://api.spotify.com/v1/audio-features/{music_id}"
+    result = get(url=url,headers=headers)
+    print(result.json())
