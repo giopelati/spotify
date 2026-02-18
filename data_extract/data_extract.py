@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from methods import get_token, get_auth_header,get_artists,get_track,get_track_infos
+from methods import get_token_spotify, get_auth_header_spotify,get_track_spotify
 import os
 
 load_dotenv()
@@ -9,8 +9,9 @@ client_secret = os.getenv("CLIENT_SECRET")
 
 
 
-token = get_token(client_id=client_id,client_secret=client_secret)
-auth_header = get_auth_header(token=token)
-print(auth_header)
+token = get_token_spotify(client_id=client_id,client_secret=client_secret)
+auth_header = get_auth_header_spotify(token=token)
 
-track = get_track_infos('4uLU6hMCjMI75M1A2tKUQC',auth_header)
+track = get_track_spotify('4uLU6hMCjMI75M1A2tKUQC',auth_header)
+
+print(track)
