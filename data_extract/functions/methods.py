@@ -121,3 +121,19 @@ def classifying_song_aubio(metrics):
         return "Agressivo/Intenso" 
     else: 
         return "Neutro/Relaxado"
+    
+    
+##################
+#  Callback Json #
+##################
+def write_data(track_artist,track_uri,track_name,emotion):
+    data = {
+            "track_artist":track_artist,
+            "track_uri":track_uri,
+            "track_name":track_name,
+            "track_emotion":emotion
+    }
+    data = json.dumps(data,indent=4)
+    data = data+",\n"    
+    with open("./return/return_musics.json",'a',encoding="utf-8") as file:
+        file.write(data)
