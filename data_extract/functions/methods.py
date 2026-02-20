@@ -126,10 +126,12 @@ def classifying_song_aubio(metrics):
 ##################
 #  Callback Json #
 ##################
-def write_data(track_artist,track_uri,track_name,emotion):
+def write_data(track_artist,track_uri,listening_timestamp,track_name,emotion):
     data = {
+            "user":"Not implemented yet",
             "track_artist":track_artist,
             "track_uri":track_uri,
+            "listening_timestamp":listening_timestamp,
             "track_name":track_name,
             "track_emotion":emotion
     }

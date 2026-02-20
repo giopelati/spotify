@@ -21,6 +21,7 @@ def orquestrator(jsons):
             data = json.load(file_data)
     
         for d in data:
+            listening_timestamp = str(d["ts"])
             spotify_track_uri = str(d["spotify_track_uri"])
             spotify_track_uri = spotify_track_uri.removeprefix("spotify:track:")
         
@@ -35,7 +36,7 @@ def orquestrator(jsons):
             if preview is not None:
                 metrics = classifying_number_parameters_aubio(preview)
                 classification = classifying_song_aubio(metrics)
-                write_data(track_artist,spotify_track_uri,track_name,classification)
+                write_data(track_artist,spotify_track_uri,listening_timestamp,track_name,classification)
                 
                 
     with open("./return/return_musics.json",'a',encoding="utf-8") as callback:
