@@ -134,6 +134,6 @@ def write_data(track_artist,track_uri,track_name,emotion):
             "track_emotion":emotion
     }
     data = json.dumps(data,indent=4)
-    data = data+",\n"    
+    data = "\n"+data+","    
     with open("./return/return_musics.json",'a',encoding="utf-8") as file:
         file.write(data)

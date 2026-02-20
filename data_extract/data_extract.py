@@ -9,11 +9,15 @@ spotify_client_id = os.getenv("SPOTIFY_CLIENT_ID")
 spotify_client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
 
 def orquestrator(jsons):
-    os.remove("./return/return_musics.json")
+    count = 1
+    files = os.listdir("./return")
+    if len(files) >= 1:
+        os.remove("./return/return_musics.json")
     with open("./return/return_musics.json",'a',encoding="utf-8") as callback:
-        callback.write("{\n")
+        callback.write("[")
     for file in jsons:
-        with open(file,"r",encoding="utf-8") as file_data:
+        file_path = f"./json/{file}"
+        with open(file_path,"r",encoding="utf-8") as file_data:
             data = json.load(file_data)
     
         for d in data:
@@ -27,8 +31,16 @@ def orquestrator(jsons):
             track_artist = track["artist"]
             track_name = track["song"]
             preview = get_track_id_deezer(track_name,track_artist)
-            metrics = classifying_number_parameters_aubio(preview)
-            classification = classifying_song_aubio(metrics)
-            write_data(track_artist,spotify_track_uri,track_name,classification)
+            
+            if preview is not None:
+                metrics = classifying_number_parameters_aubio(preview)
+                classification = classifying_song_aubio(metrics)
+                write_data(track_artist,spotify_track_uri,track_name,classification)
+                
+                
     with open("./return/return_musics.json",'a',encoding="utf-8") as callback:
-        callback.write("}")
+        content = callback.read()
+        content = content[:-1]
+        callback.truncate()
+        content+="\n]"
+        callback.write(content)
