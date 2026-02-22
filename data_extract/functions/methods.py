@@ -17,51 +17,15 @@ def normalize(text):
     ).lower()
 
 ##################
-#    Spotify     #
-##################
-
-def get_token_spotify(client_id,client_secret):
-    auth_string = client_id+":"+client_secret
-    auth_bytes = auth_string.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes),"utf-8")
-    url = "https://accounts.spotify.com/api/token"
-    headers = {
-        "Authorization" : "Basic "+auth_base64,
-        "Content-Type":"application/x-www-form-urlencoded"
-    }
-    data = {
-        "grant_type" : "client_credentials"
-    }
-    result = post(url=url,headers=headers,data=data)
-    result = json.loads(result.content)
-    acess_token = result['access_token']
-    return acess_token    
-
-def get_auth_header_spotify(token):
-    return {"Authorization" : "Bearer "+token}
-
-
-def get_track_spotify(music_id,headers):
-    url = f"https://api.spotify.com/v1/tracks/{music_id}"
-    result = get(url=url,headers=headers)
-    result = result.json()
-    song_name = result["name"]
-    artist_name = result["artists"][0]["name"]
-    return{'artist':artist_name,'song':song_name}
-
-    
-    
-
-##################
 #    Deezer      #
 ##################
 
-def get_track_id_deezer(track_name, artist_name): 
+def get_track_deezer(track_name, artist_name): 
     query = track_name 
     url = f"https://api.deezer.com/search?q={query}" 
     result = get(url) 
     result = result.json() 
-    if result["data"]: 
+    if "data" in result and result["data"]: 
         for track in result["data"]: 
             if normalize(track["artist"]["name"]) == normalize(artist_name): 
                 return track["preview"]
@@ -129,10 +93,10 @@ def classifying_song_aubio(metrics):
 def write_data(track_artist,track_uri,listening_timestamp,track_name,emotion):
     data = {
             "user":"Not implemented yet",
-            "track_artist":track_artist,
+            "track_artist":normalize(track_artist),
             "track_uri":track_uri,
             "listening_timestamp":listening_timestamp,
-            "track_name":track_name,
+            "track_name":normalize(track_name),
             "track_emotion":emotion
     }
     data = json.dumps(data,indent=4)
